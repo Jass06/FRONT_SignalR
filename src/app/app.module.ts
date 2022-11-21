@@ -12,7 +12,6 @@ import { AuthComponent } from './auth/auth.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     AuthComponent,
   ],
   imports: [

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SignalrService } from "../signalr.service";
 import { NgForm } from "@angular/forms";
+import { AuthService } from "./auth.service";
 
 @Component({
   selector: 'app-auth',
@@ -10,13 +11,14 @@ import { NgForm } from "@angular/forms";
 export class AuthComponent implements OnInit , OnDestroy{
 
   constructor(
-      public signalrService: SignalrService
+      public signalrService: SignalrService,
+      public authService: AuthService
   ) { }
 
-
+  //3
   ngOnInit(): void {
-    this.authMeListenerSuccess();
-    this.authMeListenerFail();
+    this.authService.authMeListenerSuccess();
+    this.authService.authMeListenerFail();
   }
 
   ngOnDestroy(): void {
@@ -29,10 +31,11 @@ export class AuthComponent implements OnInit , OnDestroy{
       return;
     }
 
-    this.authMe(form.value.userName, form.value.password);
+    this.authService.authMe(form.value.userName, form.value.password);
     form.reset();
   }
 
+  /*
   async authMe(user: string, pass: string){
     let personInfo = { userName: user, password: pass };
 
@@ -58,5 +61,5 @@ export class AuthComponent implements OnInit , OnDestroy{
       this.signalrService.toastr.error("Wrong credentials!");
     });
   }
-
+  */
 }

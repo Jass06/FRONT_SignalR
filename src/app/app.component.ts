@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SignalrService} from "./signalr.service";
+import {AuthService} from "./auth/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ export class AppComponent implements  OnInit, OnDestroy{
   title = 'FRONT_SignalR';
 
   constructor(
-    public signalrService: SignalrService
+    public signalrService: SignalrService,
+    public authService: AuthService
   ) {
   }
   ngOnInit(): void {
