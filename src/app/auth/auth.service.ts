@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignalrService } from  'src/app/signalr.service';
+import { User } from "../signalr.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +13,21 @@ export class AuthService {
     public router: Router
   )  {
     let tempPersonId = localStorage.getItem("personId");
-
     if (tempPersonId){
-
-        //Si esta conectado
+      //Si esta conectado
       //if (this.signalrService.hubConnection?.state == 1)
-      if (this.signalrService.hubConnection?.state ) {
+      // if(menuOpen == false){}  es igual a if(!menuOpen){}
+      // if(menuOpen == true){}   es igual a if(menuOpen){}
+      // @ts-ignore
+      if (this.signalrService.hubConnection?.state == 1) {
         this.reauthMeListener();
         this.reauthMe(tempPersonId);
       } else {
         this.signalrService.ssObs().subscribe((obj: any) => {
           if (obj.type == "HubConnStarted"){
             this.reauthMeListener();
+            // @ts-ignore
+           // this.reauthMe(tempPersonId).then(r => console.log(r));
             this.reauthMe(tempPersonId);
           }
         });
@@ -33,52 +37,43 @@ export class AuthService {
 
   public isAuthenticated: boolean = false;
 
-  //----------- 2
   async authMe(person: string, pass: string) {
     let personInfo = {userName: person, password: pass};
 
     await this.signalrService.hubConnection.invoke("authMe", personInfo)
-      .then(() => this.signalrService.toastr.info("Loging in attempt..."))
-      .catch(err => console.error(err));
-  }
-  //----------- 3
-  async reauthMe(personId: string | null) {
-    await this.signalrService.hubConnection.invoke("reauthMe", personId)
-      .then(() => this.signalrService.toastr.info("Loging in attempt..."))
+    //  .then(() => this.signalrService.toastr.info("intento de inicio de sesión.."))
       .catch(err => console.error(err));
   }
 
-  //----------- 3
   authMeListenerSuccess() {
-    this.signalrService.hubConnection.on("authMeResponseSuccess", (personId: string, personName: string) => {
-      console.log(personId);
-      console.log(personName);
-
-      localStorage.setItem("personId", personId);
-      this.signalrService.personName = personName;
+    this.signalrService.hubConnection.on("authMeResponseSuccess", (user: User) => {
+      console.log(user);
+      this.signalrService.userData = {...user};
+      localStorage.setItem("personId", user.id);
       this.isAuthenticated = true;
       this.signalrService.toastr.success("Login successful!");
       this.signalrService.router.navigateByUrl("/home");
     });
   }
 
-  // ----------- 2
   authMeListenerFail() {
     this.signalrService.hubConnection.on("authMeResponseFail", () => {
       this.signalrService.toastr.error("Wrong credentials!");
     });
   }
 
+  async reauthMe(personId: string) {
+    await this.signalrService.hubConnection.invoke("reauthMe", personId)
+     // .then(() => this.signalrService.toastr.info("Loging in attempt..."))
+      .catch(err => console.error(err));
+  }
 
-  //----------- 3
   reauthMeListener() {
-    this.signalrService.hubConnection.on("reauthMeResponse", (personId: string, personName: string) => {
-      console.log(personId);
-      console.log(personName);
-
-      this.signalrService.personName = personName;
+    this.signalrService.hubConnection.on("reauthMeResponse", (user: User) => {
+      console.log(user);
+      this.signalrService.userData = {...user}
       this.isAuthenticated = true;
-      this.signalrService.toastr.success("Re-authenticated!");
+     // this.signalrService.toastr.success("Re-authenticated!");
       if (this.signalrService.router.url == "/auth") this.signalrService.router.navigateByUrl("/home");
     });
   }

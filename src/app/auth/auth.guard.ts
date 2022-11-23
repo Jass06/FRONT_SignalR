@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router, CanActivate } from '@angular/router';
 import { AuthService } from "./auth.service";
-
-export class User {
-  public id!: string;
-  public name!: string;
-  public connId!: string; //signalr
-}
 
 @Injectable({
   providedIn: 'root'

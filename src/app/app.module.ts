@@ -6,13 +6,19 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToastrModule } from "ngx-toastr";
 import { FormsModule } from "@angular/forms";
-import { HomeComponent } from './home/home.component';
+
 import { AuthComponent } from './auth/auth.component';
+import { HomeModule } from './home/home.module';
+import { SignalrService } from "./signalr.service";
+import {AuthGuard} from "./auth/auth.guard";
+import { ArticuloComponent } from './articulo/articulo.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
+    ArticuloComponent,
   ],
   imports: [
     BrowserModule,

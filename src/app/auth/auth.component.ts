@@ -35,31 +35,4 @@ export class AuthComponent implements OnInit , OnDestroy{
     form.reset();
   }
 
-  /*
-  async authMe(user: string, pass: string){
-    let personInfo = { userName: user, password: pass };
-
-    await this.signalrService.hubConnection.invoke("authMe", personInfo)
-      .finally(() => {
-        this.signalrService.toastr.info("Loading in attempt...")
-      })
-      .catch(err => console.error(err));
-  }
-
-  private authMeListenerSuccess() {
-    this.signalrService.hubConnection.on("authMeResponseSuccess", (personInfo: any) => {
-      console.log(personInfo);
-      this.signalrService.personName = personInfo.name;
-      this.signalrService.toastr.success("Login successful!");
-      this.signalrService.router.navigateByUrl("/home");
-    });
-  }
-
-
-  private authMeListenerFail() {
-    this.signalrService.hubConnection.on("authMeResponseFail", () => {
-      this.signalrService.toastr.error("Wrong credentials!");
-    });
-  }
-  */
 }

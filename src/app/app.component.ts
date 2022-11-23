@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SignalrService} from "./signalr.service";
-import {AuthService} from "./auth/auth.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SignalrService } from "./signalr.service";
+import { AuthService } from "./auth/auth.service";
+import {SignalrSendService} from "./articulo/signalr-send.service";
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,6 @@ export class AppComponent implements  OnInit, OnDestroy{
   }
   ngOnInit(): void {
     this.signalrService.startConnection();
-/*
-    setTimeout(() => {
-      this.signalrService.askServerListener();
-      this.signalrService.askServer();
-    }, 2000)
-  */
   }
 
   ngOnDestroy(): void {
